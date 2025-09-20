@@ -1,0 +1,77 @@
+/* Base Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #F8F9FA; /* Off-white background */
+}
+
+/* Gradients and Colors */
+.bg-gradient-calm {
+    background-image: linear-gradient(to top right, #E0F7FA, #F1F8E9); /* Pale Blue to Soft Beige/Green */
+}
+.nav-active {
+    background-color: #0284c7; /* A deeper blue for active state */
+    color: white;
+}
+.nav-inactive {
+    color: #4B5563;
+    background-color: #F3F4F6;
+}
+
+/* Utility Styles */
+.chat-messages::-webkit-scrollbar { display: none; }
+.chat-messages { -ms-overflow-style: none; scrollbar-width: none; } /* Hide scrollbar for chat */
+.starter-btn {
+    @apply bg-sky-100 text-sky-700 px-4 py-2 rounded-full hover:bg-sky-200 transition-colors shadow-sm;
+}
+.mood-btn {
+    @apply text-3xl p-2 rounded-full hover:bg-gray-200 transition-transform transform hover:scale-125;
+}
+.chat-action-btn {
+    @apply bg-sky-500 text-white px-3 py-1 rounded-full hover:bg-sky-600 text-sm font-semibold transition;
+}
+
+
+/* Animation Keyframes */
+@keyframes fadeIn { 
+    from { opacity: 0; } 
+    to { opacity: 1; } 
+}
+@keyframes fadeOut { 
+    from { opacity: 1; } 
+    to { opacity: 0; visibility: hidden; } 
+}
+@keyframes slideInUp {
+    0% { transform: translateY(50px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+/* Animation Classes */
+.fade-in { animation: fadeIn 0.5s ease-in-out; }
+.fade-out { animation: fadeOut 0.5s ease-in-out forwards; }
+.slide-in-up { animation: slideInUp 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both; }
+
+
+/* Breathing Animation */
+.breathing-circle {
+    width: 150px;
+    height: 150px;
+    background-color: #81D4FA; /* Light Blue */
+    border-radius: 50%;
+    position: relative;
+    animation: breathe 8s ease-in-out infinite;
+}
+#breathing-text::before {
+    animation: textFade 8s ease-in-out infinite;
+    content: 'Prepare...';
+}
+
+@keyframes breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.5); }
+}
+@keyframes textFade {
+    0% { content: 'Hold'; opacity: 0.8; }
+    25% { content: 'Breathe in...'; opacity: 1; }
+    50% { content: 'Hold'; opacity: 0.8; }
+    75% { content: 'Breathe out...'; opacity: 1; }
+}

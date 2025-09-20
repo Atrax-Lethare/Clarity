@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clarity - Your Mental Health Companion</title>
+    
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gradient-calm text-gray-800">
+
+    <!-- Login Page -->
+    <div id="login-page" class="fixed inset-0 bg-gray-900 bg-opacity-60 flex items-center justify-center p-4 z-50 transition-opacity duration-300">
+        <div class="bg-white w-full max-w-md p-8 rounded-2xl shadow-2xl text-center slide-in-up relative">
+            <button id="close-login-btn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 transition-colors">
+                <i data-lucide="x"></i>
+            </button>
+            <h1 class="text-4xl font-bold text-sky-700 mb-2">Welcome to Clarity</h1>
+            <p class="text-gray-600 mb-6">Your personal space for reflection and growth.</p>
+            <form id="login-form" class="space-y-4">
+                <input type="text" id="user-name" placeholder="What's your full name?" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 transition" required>
+                <input type="text" id="user-nickname" placeholder="What should Clarity call you?" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 transition" required>
+                <input type="number" id="user-age" placeholder="Your age" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 transition" required>
+                <button type="submit" class="w-full bg-sky-600 text-white font-semibold py-3 rounded-lg hover:bg-sky-700 transition-transform transform hover:scale-105 shadow-lg">Start My Journey</button>
+            </form>
+            <div class="mt-4">
+                <a href="#" id="try-first-link" class="text-sm text-sky-600 hover:underline">Or, try a session first to see if it's for you</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Breathing Tool Modal -->
+    <div id="breathing-tool" class="fixed inset-0 bg-gradient-calm z-50 flex flex-col items-center justify-center transition-opacity duration-300 opacity-0 pointer-events-none">
+        <button id="close-breathing-tool" class="absolute top-6 right-6 text-gray-700 hover:text-gray-900">
+            <i data-lucide="x" class="w-8 h-8"></i>
+        </button>
+        <div class="breathing-circle shadow-2xl"></div>
+        <p id="breathing-text" class="mt-12 text-2xl font-semibold text-sky-800">Prepare...</p>
+    </div>
+    
+    <!-- Main App Container -->
+    <div id="app-container" class="h-screen w-screen flex flex-col hidden opacity-0 transition-opacity duration-500">
+        <header class="bg-white/70 backdrop-blur-lg shadow-md w-full p-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-sky-700">Clarity</h1>
+            <div class="flex items-center space-x-2">
+                <span class="text-gray-600">Hello, <span id="display-nickname" class="font-semibold">friend</span>!</span>
+                 <button id="logout-btn" class="text-gray-500 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-100">
+                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </header>
+
+        <nav class="bg-white/70 backdrop-blur-lg shadow-inner p-2 flex justify-center space-x-2 md:space-x-4">
+            <button data-target="chat-section" class="nav-btn flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 font-semibold shadow-sm nav-active">
+                <i data-lucide="message-circle" class="w-5 h-5"></i><span class="hidden md:inline">Daily Check-in</span>
+            </button>
+            <button data-target="dashboard-section" class="nav-btn flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 font-semibold shadow-sm nav-inactive">
+                <i data-lucide="layout-dashboard" class="w-5 h-5"></i><span class="hidden md:inline">Dashboard</span>
+            </button>
+            <button data-target="journal-section" class="nav-btn flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 font-semibold shadow-sm nav-inactive">
+                <i data-lucide="book-open" class="w-5 h-5"></i><span class="hidden md:inline">Journal</span>
+            </button>
+            <button data-target="habits-section" class="nav-btn flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 font-semibold shadow-sm nav-inactive">
+                <i data-lucide="check-circle-2" class="w-5 h-5"></i><span class="hidden md:inline">Habits</span>
+            </button>
+            <button data-target="memory-section" class="nav-btn flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 font-semibold shadow-sm nav-inactive">
+                <i data-lucide="sparkles" class="w-5 h-5"></i><span class="hidden md:inline">Memory Lane</span>
+            </button>
+        </nav>
+
+        <main class="flex-1 overflow-y-auto p-4 md:p-8">
+            <section id="chat-section" class="content-section">
+                <div class="max-w-3xl mx-auto bg-white/80 rounded-2xl shadow-lg p-6 flex flex-col h-[calc(100vh-200px)]">
+                    <div id="chat-messages" class="flex-1 space-y-4 overflow-y-auto pr-2"></div>
+                    <div id="chat-actions-container" class="mt-4">
+                        <div id="starter-bubbles" class="flex flex-wrap gap-2 justify-center">
+                            <button class="starter-btn">Let's start my check-in.</button>
+                            <button class="starter-btn">How does this work?</button>
+                            <button class="starter-btn">Tell me a positive quote.</button>
+                        </div>
+                        <div id="mood-selector" class="flex justify-around mt-4 p-2 bg-gray-100 rounded-full hidden">
+                            <button class="mood-btn text-3xl" data-mood="1">😞</button>
+                            <button class="mood-btn text-3xl" data-mood="2">😕</button>
+                            <button class="mood-btn text-3xl" data-mood="3">😐</button>
+                            <button class="mood-btn text-3xl" data-mood="4">😊</button>
+                            <button class="mood-btn text-3xl" data-mood="5">😁</button>
+                        </div>
+                        <form id="chat-form" class="mt-4 flex items-center gap-2 hidden">
+                            <input type="text" id="chat-input" placeholder="Tell me a bit about your day..." class="w-full px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-sky-500 transition" autocomplete="off">
+                            <button type="submit" class="bg-sky-600 text-white p-3 rounded-full hover:bg-sky-700 transition-transform transform hover:scale-110 shadow-lg">
+                                <i data-lucide="send"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="dashboard-section" class="content-section hidden">
+                 <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 bg-white/80 p-6 rounded-2xl shadow-lg">
+                        <h2 class="text-2xl font-bold mb-4 text-sky-800">Your 7-Day Mood Trend</h2>
+                        <canvas id="mood-chart"></canvas>
+                    </div>
+                    <div class="bg-white/80 p-6 rounded-2xl shadow-lg">
+                        <h2 class="text-2xl font-bold mb-4 text-sky-800">Weekly Summary</h2>
+                        <div id="weekly-summary-content" class="text-gray-600 space-y-2"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="journal-section" class="content-section hidden">
+                <div class="max-w-4xl mx-auto">
+                    <div class="bg-white/80 p-6 rounded-2xl shadow-lg mb-6">
+                        <h2 class="text-2xl font-bold mb-4 text-sky-800">Freestyle Journal</h2>
+                        <div class="relative">
+                            <textarea id="journal-textarea" rows="8" class="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500" placeholder="Write or speak your thoughts..."></textarea>
+                            <button id="mic-btn" class="absolute bottom-3 right-3 bg-gray-200 hover:bg-sky-200 text-sky-700 p-2 rounded-full transition-colors">
+                                <i data-lucide="mic"></i>
+                            </button>
+                        </div>
+                         <div class="flex items-center justify-end mt-4 gap-2">
+                            <button id="save-journal-btn" class="bg-sky-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-sky-700 transition-transform transform hover:scale-105 shadow">Save Entry</button>
+                            <button id="download-journal-btn" class="bg-gray-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-gray-700 transition-transform transform hover:scale-105 shadow flex items-center gap-2">
+                                <i data-lucide="download" class="w-4 h-4"></i> Download All
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-white/80 p-6 rounded-2xl shadow-lg">
+                        <h2 class="text-2xl font-bold mb-4 text-sky-800">Your Past Entries</h2>
+                        <div id="journal-history" class="space-y-4 max-h-96 overflow-y-auto pr-2"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="habits-section" class="content-section hidden">
+                <div class="max-w-4xl mx-auto bg-white/80 p-6 rounded-2xl shadow-lg">
+                    <h2 class="text-2xl font-bold mb-4 text-sky-800">Daily Habit Tracker</h2>
+                    <p class="text-gray-600 mb-4">Add habits you want to cultivate and track them daily.</p>
+                    <div class="flex gap-2 mb-6">
+                        <input type="text" id="new-habit-input" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500" placeholder="e.g., Drank 8 glasses of water">
+                        <button id="add-habit-btn" class="bg-sky-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-sky-700 transition-transform transform hover:scale-105 shadow">Add</button>
+                    </div>
+                    <div id="habit-list" class="space-y-3"></div>
+                </div>
+            </section>
+            
+            <section id="memory-section" class="content-section hidden">
+                 <div class="max-w-5xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-6 text-center text-sky-800">Your Memory Lane</h2>
+                    <div id="memory-lane-content" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Custom Script -->
+    <script src="script.js" defer></script>
+</body>
+</html>
+
